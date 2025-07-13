@@ -1,7 +1,14 @@
-# backend_api/app/main.py
+# app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import pacientes, evaluaciones,evaluacion_api
+
+# Ahora importamos cada router de su archivo concreto:
+from app.routers.paciente      import router as pacientes_router
+from app.routers.resultados    import router as resultados_router
+from app.routers.usuarios      import router as usuarios_router
+from app.routers.evaluacion_api import router as canary_router
+
+
 
 app = FastAPI()
 
@@ -13,10 +20,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(pacientes.router, prefix="/pacientes", tags=["Pacientes"])
-app.include_router(evaluaciones.router, prefix="/evaluaciones", tags=["Evaluaciones"])
-app.include_router(evaluacion_api.router, prefix="/api", tags=["Canary API"])
+# Aquí “montamos” cada router con el prefijo que quieras:
+app.include_router(pacientes_router,    prefix="/pacientes", tags=["Pacientes"])
+app.include_router(resultados_router,   prefix="/resultados", tags=["Resultados"])
+app.include_router(usuarios_router,     prefix="/usuarios", tags=["Usuarios"])
+app.include_router(canary_router,       prefix="/api", tags=["Canary API"])
+
+
 
 @app.get("/")
 def read_root():
-    return {"mensaje": "Backend ELEAM operativo"}
+    return {"mensaje": "Backend ELEAM operativo"
+            }

@@ -16,6 +16,8 @@ def get_db():
 
 @router.get("/", response_model=List[PacienteSchema])
 def listar_pacientes(db: Session = Depends(get_db)):
+    print(">>> PACIENTES EN BD:", db.query(Paciente).all())
+    # ---------------------------------
     return db.query(Paciente).all()
 
 @router.put("/{id}/consentimiento", response_model=PacienteSchema)
