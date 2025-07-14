@@ -7,6 +7,10 @@ from app.routers.paciente      import router as pacientes_router
 from app.routers.resultados    import router as resultados_router
 from app.routers.usuarios      import router as usuarios_router
 from app.routers.evaluacion_api import router as canary_router
+from app.models.asignacion_tokens import AsignacionTokens
+from app.models.institucion import Institucion
+from app.models.tipo_institucion import TipoInstitucion
+from app.models.tipo_resultado import TipoResultado
 
 
 

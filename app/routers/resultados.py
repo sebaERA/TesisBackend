@@ -16,7 +16,7 @@ def get_db():
 
 @router.get("/{paciente_id}", response_model=List[ResultadoSchema])
 def obtener_resultados_por_paciente(paciente_id: int, db: Session = Depends(get_db)):
-    return db.query(Resultado).filter(Resultado.idPacientes == paciente_id).all()
+    return db.query(Resultado).filter(Resultado.idpacientes == paciente_id).all()
 
 @router.post("/", response_model=ResultadoSchema)
 def registrar_resultado(data: ResultadoCreate, db: Session = Depends(get_db)):
@@ -28,7 +28,7 @@ def registrar_resultado(data: ResultadoCreate, db: Session = Depends(get_db)):
 
 @router.put("/{id_resultado}", response_model=ResultadoSchema)
 def actualizar_estado_resultado(id_resultado: int, data: ResultadoUpdate, db: Session = Depends(get_db)):
-    resultado = db.query(Resultado).filter(Resultado.idResultado == id_resultado).first()
+    resultado = db.query(Resultado).filter(Resultado.idresultado == id_resultado).first()
     if not resultado:
         raise HTTPException(status_code=404, detail="Resultado no encontrado")
     resultado.estado_validacion = data.estado_validacion

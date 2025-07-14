@@ -18,8 +18,8 @@ def get_db():
 @router.post("/evaluar-audio")
 async def evaluar_audio(
     file: UploadFile = File(...),
-    idPaciente: int = Form(...),
-    idTipoResultado: int = Form(...),
+    idpacientes: int = Form(...),
+    idtiporesultado: int = Form(...),
     db: Session = Depends(get_db)
 ):
     try:
@@ -42,8 +42,8 @@ async def evaluar_audio(
         # 5. Guardar en base de datos
         nuevo_resultado = Resultado(
             resultado=texto_resultado,
-            idPacientes=idPaciente,
-            idTipoResultado=idTipoResultado
+            idpacientes=idpacientes,
+            idtiporesultado=idtiporesultado
         )
         db.add(nuevo_resultado)
         db.commit()
@@ -52,7 +52,7 @@ async def evaluar_audio(
         return {
             "mensaje": "Resultado registrado correctamente",
             "resultado": texto_resultado,
-            "idResultado": nuevo_resultado.idResultado
+            "idresultado": nuevo_resultado.idresultado
         }
 
     except Exception as e:

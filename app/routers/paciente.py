@@ -22,7 +22,7 @@ def listar_pacientes(db: Session = Depends(get_db)):
 
 @router.put("/{id}/consentimiento", response_model=PacienteSchema)
 def actualizar_consentimiento(id: int, estado: bool = Body(...), db: Session = Depends(get_db)):
-    paciente = db.query(Paciente).filter(Paciente.idPacientes == id).first()
+    paciente = db.query(Paciente).filter(Paciente.idpacientes == id).first()
     if not paciente:
         raise HTTPException(status_code=404, detail="Paciente no encontrado")
     
