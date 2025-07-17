@@ -30,3 +30,10 @@ def actualizar_consentimiento(id: int, estado: bool = Body(...), db: Session = D
     db.commit()
     db.refresh(paciente)
     return paciente
+
+@router.get("/{id}", response_model=PacienteSchema)
+def obtener_paciente(id: int, db: Session = Depends(get_db)):
+    paciente = db.query(Paciente).filter(Paciente.idpacientes == id).first()
+    if not paciente:
+        raise HTTPException(status_code=404, detail="Paciente no encontrado")
+    return paciente

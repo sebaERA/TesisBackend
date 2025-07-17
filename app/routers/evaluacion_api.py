@@ -23,23 +23,23 @@ async def evaluar_audio(
     db: Session = Depends(get_db)
 ):
     try:
-        # 1. Guardar temporalmente el archivo
+        print("Inicio evaluar_audio")  # <-- LOG A
         filename = f"temp_{uuid.uuid4()}.wav"
         with open(filename, "wb") as f:
             f.write(await file.read())
+        print("Archivo guardado")  # <-- LOG B
 
-        # 2. Analizar el audio
         scores = analizar_audio(filename)
+        print(f"Audio analizado: {scores}")  # <-- LOG C
 
-        # 3. Eliminar el archivo temporal
         os.remove(filename)
+        print("Archivo temporal eliminado")  # <-- LOG D
 
-        # 4. Extraer texto de resultado
         texto_resultado = ", ".join(
             f"{s['code']}: {s['data']['result']}" for s in scores
         )
+        print(f"Texto resultado generado: {texto_resultado}")  # <-- LOG E
 
-        # 5. Guardar en base de datos
         nuevo_resultado = Resultado(
             resultado=texto_resultado,
             idpacientes=idpacientes,
@@ -48,6 +48,7 @@ async def evaluar_audio(
         db.add(nuevo_resultado)
         db.commit()
         db.refresh(nuevo_resultado)
+        print("Resultado guardado en base de datos")  # <-- LOG F
 
         return {
             "mensaje": "Resultado registrado correctamente",
@@ -56,5 +57,5 @@ async def evaluar_audio(
         }
 
     except Exception as e:
+        print(f"ERROR EN /evaluar-audio: {e}")  # LOG DE ERROR
         raise HTTPException(status_code=500, detail=f"Error en análisis: {e}")
-
